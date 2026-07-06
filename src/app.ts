@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get("/", testingRoute);
-app.use("/api/v1", rootRouter);
+app.use("/api", rootRouter);
 // app.use(globalErrorHandler);
 
 app.use(notFound);
