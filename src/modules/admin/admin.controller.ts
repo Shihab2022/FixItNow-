@@ -65,18 +65,12 @@ const GetAllCategories = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const CreateCategory = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AdminService.CreateCategory();
-
+  const data = await AdminService.CreateCategory(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Category created successfully!",
-    data: {
-      status: 200,
-      message: "Category created successfully!",
-    },
+    data,
   });
 });
 

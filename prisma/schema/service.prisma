@@ -4,7 +4,7 @@ model Service {
   description String
   price       Float
   location    String
-  status      Boolean @default(true) // true = active, false = inactive
+  status      Boolean @default(true)
 
   technicianId String
   technician   User   @relation("TechnicianServices", fields: [technicianId], references: [id])

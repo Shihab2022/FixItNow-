@@ -3,10 +3,10 @@ import { prisma } from "../../lib/prisma";
 import { IAuthUser, RegisterUserPayload } from "../../types";
 import config from "../../config";
 import { UserStatus } from "../../../generated/prisma/enums";
-import { Secret, SignOptions } from "jsonwebtoken";
-import { generateJwtToken, verifyJwtToken } from "../../helpars/jwtHelpers";
+import { SignOptions } from "jsonwebtoken";
+import { generateJwtToken } from "../../helpars/jwtHelpers";
 import ApiError from "../../helpars/ApiError";
-import { httpStatus } from "http-status";
+import httpStatus from "http-status";
 
 const register = async (payload: RegisterUserPayload) => {
   const { email, password, name, role, phone, address } = payload;
