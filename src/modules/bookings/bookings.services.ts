@@ -23,12 +23,24 @@ const CreateNewBooking = async (req: any) => {
   return booking;
 };
 
-const GetUserBookings = async () => {
-  return null;
+const GetUserBookings = async (id: string) => {
+  const bookings = await prisma.booking.findMany({
+    where: { customerId: id },
+    include: {
+      service: true,
+    },
+  });
+  return bookings;
 };
 
-const GetBookingDetails = async () => {
-  return null;
+const GetBookingDetails = async (id: string) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id },
+    include: {
+      service: true,
+    },
+  });
+  return booking;
 };
 
 export const BookingsService = {

@@ -17,34 +17,26 @@ const CreateNewBooking = catchAsync(
     });
   },
 );
-const GetUserBookings = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
+const GetUserBookings = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    const data = await BookingsService.GetUserBookings(req.user.id as string);
 
-  await BookingsService.GetUserBookings();
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User bookings retrieved successfully!",
-    data: {
-      status: 200,
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
       message: "User bookings retrieved successfully!",
-    },
-  });
-});
+      data,
+    });
+  },
+);
 const GetBookingDetails = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await BookingsService.GetBookingDetails();
+  const data = await BookingsService.GetBookingDetails(req.params.id as string);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Booking details retrieved successfully!",
-    data: {
-      status: 200,
-      message: "Booking details retrieved successfully!",
-    },
+    data,
   });
 });
 
