@@ -5,18 +5,13 @@ import sendResponse from "../../helpars/sendResponse";
 import { AuthServices } from "./auth.service";
 
 const register = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AuthServices.register();
+  const user = await AuthServices.register(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "User registered successfully!",
-    data: {
-      status: 200,
-      message: "User registered successfully!",
-    },
+    data: user,
   });
 });
 const login = catchAsync(async (req: Request, res: Response) => {
