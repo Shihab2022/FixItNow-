@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../helpars/catchAsync";
 import sendResponse from "../../helpars/sendResponse";
 import { AuthServices } from "./auth.service";
+import { IAuthUser } from "../../types";
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const user = await AuthServices.register(req.body);
@@ -36,21 +37,18 @@ const login = catchAsync(async (req: Request, res: Response) => {
     data: { accessToken, refreshToken },
   });
 });
-const getMe = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
+const getMe = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    const result = await AuthServices.getMe(req.user!);
 
-  await AuthServices.getMe();
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User details retrieved successfully!",
-    data: {
-      status: 200,
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
       message: "User details retrieved successfully!",
-    },
-  });
-});
+      data: result,
+    });
+  },
+);
 
 export const AuthController = {
   register,

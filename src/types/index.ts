@@ -1,3 +1,5 @@
+import { Role } from "../../generated/prisma/browser";
+
 export type RegisterUserPayload = {
   email: string;
   password: string;
@@ -6,3 +8,9 @@ export type RegisterUserPayload = {
   phone?: string;
   address?: string;
 };
+
+export type IAuthUser = {
+  name: string;
+  role: Role;
+  id: string;
+} | null;

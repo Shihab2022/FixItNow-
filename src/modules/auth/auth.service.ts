@@ -1,10 +1,12 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
-import { RegisterUserPayload } from "../../types";
+import { IAuthUser, RegisterUserPayload } from "../../types";
 import config from "../../config";
 import { UserStatus } from "../../../generated/prisma/enums";
 import { Secret, SignOptions } from "jsonwebtoken";
 import { generateJwtToken, verifyJwtToken } from "../../helpars/jwtHelpers";
+import ApiError from "../../helpars/ApiError";
+import { httpStatus } from "http-status";
 
 const register = async (payload: RegisterUserPayload) => {
   const { email, password, name, role, phone, address } = payload;
@@ -63,8 +65,8 @@ const login = async (payload: { email: string; password: string }) => {
   if (!isPasswordCorrect) {
     throw new Error("Password is not correct!");
   }
-  const tokenData = {
-    userId: user?.id,
+  const tokenData: IAuthUser = {
+    id: user?.id,
     role: user.role,
     name: user.name,
   };
@@ -82,8 +84,23 @@ const login = async (payload: { email: string; password: string }) => {
   return { accessToken, refreshToken };
 };
 
-const getMe = async () => {
-  return null;
+const getMe = async (user: IAuthUser) => {
+  if (!user) {
+    throw new Error("User not found");
+  }
+  const reUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: {
+      technicianProfile: true, // Will cleanly return data for techs, or null for customers/admins
+    },
+  });
+
+  if (!reUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  const { password: _, ...userWithoutPassword } = reUser;
+  return userWithoutPassword;
 };
 
 export const AuthServices = {
