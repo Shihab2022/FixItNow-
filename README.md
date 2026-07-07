@@ -57,3 +57,18 @@
 }
 
 ```
+
+# Create Booking
+
+```
+here technicianId is the technician user id not technician table id
+
+
+{
+  "serviceId": "3728988d-e769-4277-bf85-adbe356255f0",
+  "technicianId": "7bce1d58-95b6-4c83-a8a2-07c3a9c42f88",
+  "scheduledDate": "2026-08-15T14:30:00.000Z",
+  "totalPrice": 500
+}
+
+```

@@ -3,22 +3,20 @@ import httpStatus from "http-status";
 import catchAsync from "../../helpars/catchAsync";
 import sendResponse from "../../helpars/sendResponse";
 import { BookingsService } from "./bookings.services";
+import { IAuthUser } from "../../types";
 
-const CreateNewBooking = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
+const CreateNewBooking = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    const data = await BookingsService.CreateNewBooking(req);
 
-  await BookingsService.CreateNewBooking();
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "New booking created successfully!",
-    data: {
-      status: 200,
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
       message: "New booking created successfully!",
-    },
-  });
-});
+      data,
+    });
+  },
+);
 const GetUserBookings = catchAsync(async (req: Request, res: Response) => {
   const token = req.headers.authorization || "";
 
