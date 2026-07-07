@@ -36,3 +36,24 @@
 }
 
 ```
+
+# Create Category
+
+```
+{"name": "Emergency Electrical Wiring Repair",
+  "description": "Comprehensive troubleshooting for residential power failures and socket overloads."}
+
+```
+
+# Create Service
+
+```
+{
+  "title": "Emergency Electrical Wiring Repair",
+  "description": "Comprehensive troubleshooting for residential power failures and socket overloads.",
+  "price": 75.50,
+  "location": "Austin Central Area",
+  "categoryId": "PASTE_THE_CATEGORY_UUID_HERE"
+}
+
+```
