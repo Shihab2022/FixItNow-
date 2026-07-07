@@ -1,0 +1,32 @@
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  password  String
+  name      String
+  role      Role
+  phone     String?
+  address   String?
+  status    UserStatus @default(ACTIVE)
+  emailVerified Boolean    @default(true)
+  forgotPinCode Int?  @default(0)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  technicianProfile    TechnicianProfile?
+  services             Service[]          @relation("TechnicianServices")
+  
+  // A user can be involved in bookings/payments/reviews as either a customer or a tech
+  customerBookings     Booking[]          @relation("CustomerBookings")
+  technicianBookings   Booking[]          @relation("TechnicianBookings")
+  
+  payments             Payment[]
+  
+  reviewsGiven         Review[]           @relation("CustomerReviews")
+  reviewsReceived      Review[]           @relation("TechnicianReviews")
+
+  availabilities    Availability[]
+
+    @@map("users")
+}
