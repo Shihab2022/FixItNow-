@@ -10,14 +10,35 @@ const getAllTechnicians = async () => {
 };
 
 const getAllCategories = async () => {
-  return null;
+  const categories = await prisma.category.findMany();
+  return categories;
 };
 
 const getAllServices = async () => {
-  return null;
+  const services = await prisma.service.findMany();
+  return services;
 };
-const getTechnicianProfile = async () => {
-  return null;
+const getTechnicianProfile = async (technicianId: string) => {
+  const user = await prisma.technicianProfile.findUnique({
+    where: { id: technicianId },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          address: true,
+          role: true,
+          emailVerified: true,
+          createdAt: true,
+          updatedAt: true,
+          // password is intentionally omitted
+        },
+      },
+    },
+  });
+  return user;
 };
 const createService = async (req: any) => {
   const user = req.user;

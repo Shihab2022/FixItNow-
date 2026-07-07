@@ -21,56 +21,45 @@ const getAllTechnicians = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await ServicesTechniciansService.getAllCategories();
+  const data = await ServicesTechniciansService.getAllCategories();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "getAllCategories successfully!",
-    data: {
-      status: 200,
-      message: "getAllCategories successfully!",
-    },
+    message: "All Categories retrieved successfully!",
+    data,
   });
 });
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await ServicesTechniciansService.getAllServices();
+  const data = await ServicesTechniciansService.getAllServices();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "getAllServices successfully!",
-    data: {
-      status: 200,
-      message: "getAllServices successfully!",
-    },
+    message: "All Services retrieved successfully!",
+    data,
   });
 });
 const getTechnicianProfile = catchAsync(async (req: Request, res: Response) => {
-  await ServicesTechniciansService.getTechnicianProfile();
+  const data = await ServicesTechniciansService.getTechnicianProfile(
+    req.params.id as string,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Technician profile retrieved successfully!",
-    data: {
-      status: 200,
-      message: "Technician profile retrieved successfully!",
-    },
+    data,
   });
 });
 const createService = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {
-    const data=await ServicesTechniciansService.createService(req);
+    const data = await ServicesTechniciansService.createService(req);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: "Service created successfully!",
-      data
+      data,
     });
   },
 );
