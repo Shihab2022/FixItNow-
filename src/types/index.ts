@@ -14,3 +14,13 @@ export type IAuthUser = {
   role: Role;
   id: string;
 } | null;
+
+export interface TimeSlot {
+  start: string;
+  end: string;
+}
+
+export interface UpdateAvailabilityPayload {
+  day: string;
+  slots: TimeSlot[];
+}

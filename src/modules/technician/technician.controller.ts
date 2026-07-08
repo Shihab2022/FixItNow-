@@ -22,51 +22,66 @@ const UpdateProfile = catchAsync(
     });
   },
 );
-const UpdateAvailability = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
+const UpdateAvailability = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    if (!req.user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
+    }
 
-  await TechnicianService.UpdateAvailability();
+    const data = await TechnicianService.UpdateAvailability(
+      req.user.id,
+      req.body,
+    );
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Availability updated successfully!",
-    data: {
-      status: 200,
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
       message: "Availability updated successfully!",
-    },
-  });
-});
-const GetBookingHistory = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
+      data,
+    });
+  },
+);
+const GetBookingHistory = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    if (!req.user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
+    }
 
-  await TechnicianService.GetBookingHistory();
+    const data = await TechnicianService.GetBookingHistory(
+      req.user.id as string,
+    );
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Booking history retrieved successfully!",
-    data: {
-      status: 200,
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
       message: "Booking history retrieved successfully!",
-    },
-  });
-});
-const UpdateBookingStatus = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
+      data,
+    });
+  },
+);
+const UpdateBookingStatus = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    if (!req.user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
+    }
 
-  await TechnicianService.UpdateBookingStatus();
+    await TechnicianService.UpdateBookingStatus(
+      req.user.id as string,
+      req.params.id as string,
+      req.body.status,
+    );
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Booking status updated successfully!",
-    data: {
-      status: 200,
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
       message: "Booking status updated successfully!",
-    },
-  });
-});
+      data: {
+        status: 200,
+        message: "Booking status updated successfully!",
+      },
+    });
+  },
+);
 
 export const TechnicianController = {
   UpdateProfile,
