@@ -1,5 +1,18 @@
-const UpdateProfile = async () => {
-  return null;
+import { prisma } from "../../lib/prisma";
+
+const UpdateProfile = async (id: string, payload: any) => {
+  const updateData = Object.fromEntries(
+    Object.entries(payload).filter(([_, value]) => value !== undefined),
+  );
+
+  const result = await prisma.technicianProfile.update({
+    where: {
+      userId: id,
+    },
+    data: updateData,
+  });
+
+  return result;
 };
 
 const UpdateAvailability = async () => {

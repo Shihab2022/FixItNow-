@@ -4,6 +4,7 @@ import catchAsync from "../../helpars/catchAsync";
 import sendResponse from "../../helpars/sendResponse";
 import { BookingsService } from "./bookings.services";
 import { IAuthUser } from "../../types";
+import ApiError from "../../helpars/ApiError";
 
 const CreateNewBooking = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {
@@ -19,6 +20,9 @@ const CreateNewBooking = catchAsync(
 );
 const GetUserBookings = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {
+    if (!req.user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
+    }
     const data = await BookingsService.GetUserBookings(req.user.id as string);
 
     sendResponse(res, {
