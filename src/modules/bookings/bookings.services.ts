@@ -13,14 +13,43 @@ const CreateNewBooking = async (req: any) => {
     );
   }
   const validatedData = CreateBookingSchema.parse(payload);
-  const booking = await prisma.booking.create({
-    data: {
-      ...validatedData,
-      customerId: user.id,
-      status: "REQUESTED",
-    },
+
+  const result = await prisma.$transaction(async (tx) => {
+    const booking = await tx.booking.create({
+      data: {
+        ...validatedData,
+        customerId: user.id,
+        status: "REQUESTED",
+      },
+    });
+    // create payment
+    const today = new Date();
+
+    const transactionId =
+      "Fix-It-Now-" +
+      today.getFullYear() +
+      "-" +
+      today.getMonth() +
+      "-" +
+      today.getDay() +
+      "-" +
+      today.getHours() +
+      "-" +
+      today.getMinutes();
+
+    await tx.payment.create({
+      data: {
+        bookingId: booking.id,
+        amount: booking.totalPrice,
+        customerId: user.id,
+        transactionId,
+      },
+    });
+
+    return booking;
   });
-  return booking;
+
+  return result;
 };
 
 const GetUserBookings = async (id: string) => {

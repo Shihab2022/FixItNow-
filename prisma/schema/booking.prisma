@@ -5,9 +5,9 @@ model Booking {
   totalPrice      Float
   customerAddress String?
   notes           String?
-
-  customerId String
-  customer   User   @relation("CustomerBookings", fields: [customerId], references: [id])
+  paymentStatus   PaymentStatus @default(PENDING)
+  customerId      String
+  customer        User          @relation("CustomerBookings", fields: [customerId], references: [id])
 
   technicianId String
   technician   User   @relation("TechnicianBookings", fields: [technicianId], references: [id])

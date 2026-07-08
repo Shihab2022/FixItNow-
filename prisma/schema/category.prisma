@@ -2,7 +2,7 @@ model Category {
   id          String    @id @default(uuid())
   name        String    @unique
   description String?
-  status      Boolean   @default(true) 
+  status      Boolean   @default(true)
   services    Service[]
 
   createdAt DateTime @default(now())

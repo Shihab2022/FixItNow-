@@ -26,7 +26,7 @@ export default {
   },
   ssl: {
     store_id: process.env.STORE_ID,
-    store_passwd: process.env.SOTRE_PASS,
+    store_passwd: process.env.STORE_PASS,
     sslPaymentApi: process.env.SSL_PAYMENT_API,
     success_url: process.env.SUCCESS_URL,
     fail_url: process.env.FAIL_URL,

@@ -6,18 +6,13 @@ import { PaymentsService } from "./payments.service";
 import { BookingsService } from "../bookings/bookings.services";
 
 const create = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await PaymentsService.create();
+  const data = await PaymentsService.create(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "New payment created successfully!",
-    data: {
-      status: 200,
-      message: "New payment created successfully!",
-    },
+    message: "Payment created successfully!",
+    data,
   });
 });
 const confirm = catchAsync(async (req: Request, res: Response) => {
