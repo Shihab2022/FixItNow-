@@ -56,15 +56,52 @@ const create = async (appointmentDetails: any) => {
   };
 };
 
-const confirm = async () => {
-  return null;
+const confirm = async (payload: any) => {
+  const response = payload;
+
+  await prisma.$transaction(async (tx) => {
+    const updatedPaymentData = await tx.payment.update({
+      where: {
+        transactionId: response.transactionId,
+      },
+      data: {
+        status: PaymentStatus.COMPLETED,
+        paymentGatewayData: response,
+      },
+    });
+
+    await tx.booking.update({
+      where: {
+        id: updatedPaymentData.bookingId,
+      },
+      data: {
+        paymentStatus: PaymentStatus.COMPLETED,
+      },
+    });
+  });
 };
 
-const GetPaymentHistory = async () => {
-  return null;
+const GetPaymentHistory = async (id: string) => {
+  const paymentHistory = await prisma.payment.findMany({
+    where: {
+      customerId: id,
+    },
+    include: {
+      booking: true,
+    },
+  });
+  return paymentHistory;
 };
-const GetPaymentDetails = async () => {
-  return null;
+const GetPaymentDetails = async (paymentId: string) => {
+  const paymentDetails = await prisma.payment.findUniqueOrThrow({
+    where: {
+      id: paymentId,
+    },
+    include: {
+      booking: true,
+    },
+  });
+  return paymentDetails;
 };
 
 export const PaymentsService = {

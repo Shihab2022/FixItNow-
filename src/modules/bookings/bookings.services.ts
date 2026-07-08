@@ -25,17 +25,9 @@ const CreateNewBooking = async (req: any) => {
     // create payment
     const today = new Date();
 
-    const transactionId =
-      "Fix-It-Now-" +
-      today.getFullYear() +
-      "-" +
-      today.getMonth() +
-      "-" +
-      today.getDay() +
-      "-" +
-      today.getHours() +
-      "-" +
-      today.getMinutes();
+    const transactionId = `Fix-It-Now-${Date.now()}-${Math.floor(
+      Math.random() * 1000000,
+    )}`;
 
     await tx.payment.create({
       data: {

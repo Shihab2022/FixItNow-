@@ -1,6 +1,6 @@
 # CUSTOMER
 
-```\
+```
 {
 "name": "Jane Smith",
 "email": "jane9.smith@example.com",
@@ -69,6 +69,26 @@ here technicianId is the technician user id not technician table id
   "technicianId": "7bce1d58-95b6-4c83-a8a2-07c3a9c42f88",
   "scheduledDate": "2026-08-15T14:30:00.000Z",
   "totalPrice": 500
+}
+
+```
+
+# create payment
+
+```
+{
+
+
+    "bookingId":"002ee3c9-b4c1-47dd-b915-9a2025b9b07f"
+}
+```
+
+# confirm payment
+
+```
+
+{
+"transactionId":"Fix-It-Now-2026-6-3-15-3"
 }
 
 ```
