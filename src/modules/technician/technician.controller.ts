@@ -65,7 +65,7 @@ const UpdateBookingStatus = catchAsync(
       throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
     }
 
-    await TechnicianService.UpdateBookingStatus(
+    const data = await TechnicianService.UpdateBookingStatus(
       req.user.id as string,
       req.params.id as string,
       req.body.status,
@@ -75,10 +75,7 @@ const UpdateBookingStatus = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "Booking status updated successfully!",
-      data: {
-        status: 200,
-        message: "Booking status updated successfully!",
-      },
+      data,
     });
   },
 );

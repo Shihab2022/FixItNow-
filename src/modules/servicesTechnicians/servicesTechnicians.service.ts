@@ -5,8 +5,114 @@ import httpStatus from "http-status";
 import { CreateServiceSchema } from "../validation";
 import { prisma } from "../../lib/prisma";
 
-const getAllTechnicians = async () => {
-  return null;
+const getAllTechnicians = async (query: any) => {
+  const {
+    page = 1,
+    limit = 10,
+    searchTerm,
+    minRate,
+    maxRate,
+    minExperience,
+    available,
+    status,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+  } = query;
+
+  const skip = (Number(page) - 1) * Number(limit);
+
+  const where: any = {};
+
+  // Search
+  if (searchTerm) {
+    where.OR = [
+      {
+        bio: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      {
+        user: {
+          name: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+      },
+      {
+        user: {
+          email: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+      },
+    ];
+  }
+
+  // Hourly Rate
+  if (minRate || maxRate) {
+    where.hourlyRate = {};
+
+    if (minRate) {
+      where.hourlyRate.gte = Number(minRate);
+    }
+
+    if (maxRate) {
+      where.hourlyRate.lte = Number(maxRate);
+    }
+  }
+
+  // Experience
+  if (minExperience) {
+    where.experience = {
+      gte: Number(minExperience),
+    };
+  }
+
+  // Availability
+  if (available !== undefined) {
+    where.isAvailable = available === "true";
+  }
+
+  // Status
+  if (status !== undefined) {
+    where.status = status === "true";
+  }
+
+  const technicians = await prisma.technicianProfile.findMany({
+    where,
+    skip,
+    take: Number(limit),
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+        },
+      },
+    },
+  });
+
+  const total = await prisma.technicianProfile.count({
+    where,
+  });
+
+  return {
+    meta: {
+      page: Number(page),
+      limit: Number(limit),
+      total,
+      totalPage: Math.ceil(total / Number(limit)),
+    },
+    data: technicians,
+  };
 };
 
 const getAllCategories = async () => {

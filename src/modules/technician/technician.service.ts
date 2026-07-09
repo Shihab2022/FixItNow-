@@ -72,6 +72,7 @@ const GetBookingHistory = async (userId: string) => {
           location: true,
           status: true,
         },
+        review: true,
       },
     },
     orderBy: {

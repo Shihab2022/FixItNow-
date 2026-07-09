@@ -92,3 +92,13 @@ here technicianId is the technician user id not technician table id
 }
 
 ```
+
+# create review
+
+```
+{
+  "bookingId": "002ee3c9-b4c1-47dd-b915-9a2025b9b07f",
+  "rating": 4.5,
+  "comment": "Excellent service. Highly recommended!"
+}
+```

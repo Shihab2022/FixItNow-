@@ -6,18 +6,13 @@ import { ServicesTechniciansService } from "./servicesTechnicians.service";
 import { IAuthUser } from "../../types";
 
 const getAllTechnicians = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await ServicesTechniciansService.getAllTechnicians();
+  const data = await ServicesTechniciansService.getAllTechnicians(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "getAllTechnicians successfully!",
-    data: {
-      status: 200,
-      message: "getAllTechnicians successfully!",
-    },
+    data
   });
 });
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
