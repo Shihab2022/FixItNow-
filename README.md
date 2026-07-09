@@ -102,3 +102,19 @@ here technicianId is the technician user id not technician table id
   "comment": "Excellent service. Highly recommended!"
 }
 ```
+
+submission
+
+```
+Backend Repo : https://github.com/Shihab2022/FixItNow-
+
+Live API : https://fixitnow-one.vercel.app/
+
+API Docs : https://documenter.getpostman.com/view/21086915/2sBY4LQMXu#cf931068-eba1-46b6-b950-bfd26e6306e1
+
+Demo Video : https://drive.google.com/file/d/1c6eMrZS971Oa9Bxbvl6ASO8As5VmypL0/view?usp=drive_link
+
+Admin Email : admin@fixitnow.com
+
+Admin Password : admin@123
+```
