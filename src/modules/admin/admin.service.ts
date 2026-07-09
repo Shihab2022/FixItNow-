@@ -1,17 +1,43 @@
+import { UserStatus } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 import { CreateCategorySchema } from "../validation";
 
 const GetAllUsers = async () => {
-  return null;
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      status: true,
+      role: true,
+      phone: true,
+      emailVerified: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  return users;
 };
-const UpdateUserStatus = async () => {
-  return null;
+const UpdateUserStatus = async (payload: {
+  id: string;
+  status: UserStatus;
+}) => {
+  const { id, status } = payload;
+  const user = await prisma.user.update({
+    where: { id },
+    data: { status },
+  });
+  const { password, ...userWithoutPassword } = user;
+  return userWithoutPassword;
 };
+
 const GetAllBookings = async () => {
-  return null;
+  const bookings = await prisma.booking.findMany({});
+  return bookings;
 };
 const GetAllCategories = async () => {
-  return null;
+  const categories = await prisma.category.findMany({});
+  return categories;
 };
 const CreateCategory = async (payload: {
   name: string;

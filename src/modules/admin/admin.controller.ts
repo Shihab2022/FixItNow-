@@ -5,63 +5,46 @@ import sendResponse from "../../helpars/sendResponse";
 import { AdminService } from "./admin.service";
 
 const GetAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AdminService.GetAllUsers();
+  const data = await AdminService.GetAllUsers();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Users retrieved successfully!",
-    data: {
-      status: 200,
-      message: "Users retrieved successfully!",
-    },
+    data,
   });
 });
 const UpdateUserStatus = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AdminService.UpdateUserStatus();
+  const data = await AdminService.UpdateUserStatus({
+    id: req.params.id as string,
+    status: req.body.status,
+  });
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Users retrieved successfully!",
-    data: {
-      status: 200,
-      message: "Users retrieved successfully!",
-    },
+    message: "User status updated successfully!",
+    data,
   });
 });
 const GetAllBookings = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AdminService.GetAllBookings();
+  const data = await AdminService.GetAllBookings();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Users retrieved successfully!",
-    data: {
-      status: 200,
-      message: "Users retrieved successfully!",
-    },
+    message: "Bookings retrieved successfully!",
+    data,
   });
 });
 const GetAllCategories = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AdminService.GetAllCategories();
+  const data = await AdminService.GetAllCategories();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Categories retrieved successfully!",
-    data: {
-      status: 200,
-      message: "Categories retrieved successfully!",
-    },
+    data,
   });
 });
 const CreateCategory = catchAsync(async (req: Request, res: Response) => {
