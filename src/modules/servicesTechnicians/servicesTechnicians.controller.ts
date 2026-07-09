@@ -12,7 +12,7 @@ const getAllTechnicians = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "getAllTechnicians successfully!",
-    data
+    data,
   });
 });
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
@@ -26,7 +26,7 @@ const getAllCategories = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
-  const data = await ServicesTechniciansService.getAllServices();
+  const data = await ServicesTechniciansService.getAllServices(req.query);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

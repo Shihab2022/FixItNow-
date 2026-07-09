@@ -120,9 +120,125 @@ const getAllCategories = async () => {
   return categories;
 };
 
-const getAllServices = async () => {
-  const services = await prisma.service.findMany();
-  return services;
+const getAllServices = async (query: any) => {
+  const {
+    page = 1,
+    limit = 10,
+    searchTerm,
+    categoryId,
+    technicianId,
+    location,
+    minPrice,
+    maxPrice,
+    status,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+  } = query;
+
+  const skip = (Number(page) - 1) * Number(limit);
+
+  const where: any = {};
+
+  // Search by title or description
+  if (searchTerm) {
+    where.OR = [
+      {
+        title: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+      {
+        description: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    ];
+  }
+
+  // Category Filter
+  if (categoryId) {
+    where.categoryId = categoryId;
+  }
+
+  // Technician Filter
+  if (technicianId) {
+    where.technicianId = technicianId;
+  }
+
+  // Location Filter
+  if (location) {
+    where.location = {
+      contains: location,
+      mode: "insensitive",
+    };
+  }
+
+  // Price Range Filter
+  if (minPrice || maxPrice) {
+    where.price = {};
+
+    if (minPrice) {
+      where.price.gte = Number(minPrice);
+    }
+
+    if (maxPrice) {
+      where.price.lte = Number(maxPrice);
+    }
+  }
+
+  // Status Filter
+  if (status !== undefined) {
+    where.status = status === "true";
+  }
+
+  const services = await prisma.service.findMany({
+    where,
+    skip,
+    take: Number(limit),
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+    include: {
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+        },
+      },
+      _count: {
+        select: {
+          bookings: true,
+        },
+      },
+    },
+  });
+
+  const total = await prisma.service.count({
+    where,
+  });
+
+  return {
+    meta: {
+      page: Number(page),
+      limit: Number(limit),
+      total,
+      totalPage: Math.ceil(total / Number(limit)),
+    },
+    data: services,
+  };
+
+  // const services = await prisma.service.findMany();
+  // return services;
 };
 const getTechnicianProfile = async (technicianId: string) => {
   const user = await prisma.technicianProfile.findUnique({
