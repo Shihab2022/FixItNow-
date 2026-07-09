@@ -4,7 +4,7 @@ model Payment {
   paymentGatewayData Json?
   status             PaymentStatus @default(PENDING)
   paidAt             DateTime?     @default(now())
-  transactionId      String       @unique
+  transactionId      String        @unique
 
   bookingId String  @unique
   booking   Booking @relation(fields: [bookingId], references: [id])
